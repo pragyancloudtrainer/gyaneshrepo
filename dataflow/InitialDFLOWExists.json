@@ -1,0 +1,49 @@
+{
+	"name": "InitialDFLOWExists",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "srcEmp",
+						"type": "DatasetReference"
+					},
+					"name": "srcEmp"
+				},
+				{
+					"dataset": {
+						"referenceName": "srcDepartment",
+						"type": "DatasetReference"
+					},
+					"name": "srcDept"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          eid as integer,",
+				"          deptid as integer,",
+				"          ename as string,",
+				"          eage as integer,",
+				"          esalary as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> srcEmp",
+				"source(output(",
+				"          deptid as integer,",
+				"          deptname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> srcDept"
+			]
+		}
+	}
+}
