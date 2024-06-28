@@ -58,15 +58,8 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> innerjoin",
-				"innerjoin select(mapColumn(",
-				"          eid,",
-				"          ename,",
-				"          deptid = srcDept@deptid,",
-				"          deptname,",
-				"          esalary",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> selectValue",
+				"innerjoin select(skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> selectValue",
 				"selectValue sort(desc(esalary, true)) ~> sortBySal"
 			]
 		}
