@@ -67,7 +67,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectValue",
-				"selectValue sort(asc(esalary, true)) ~> sortBySal"
+				"selectValue sort(desc(esalary, true)) ~> sortBySal"
 			]
 		}
 	}
