@@ -1,0 +1,16 @@
+{
+	"name": "srcDept",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lsSQLDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Department"
+		}
+	}
+}
