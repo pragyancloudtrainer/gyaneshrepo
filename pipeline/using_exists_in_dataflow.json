@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataFlowSelectAndSort",
+						"referenceName": "existsDataFlow",
 						"type": "DataFlowReference"
 					},
 					"compute": {

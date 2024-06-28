@@ -12,15 +12,19 @@
 					"name": "srcReadEmp"
 				},
 				{
-					"linkedService": {
-						"referenceName": "lsSQLDB",
-						"type": "LinkedServiceReference"
+					"dataset": {
+						"referenceName": "srcDept",
+						"type": "DatasetReference"
 					},
 					"name": "srcReadDept"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "existTransform"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          eid as integer,",
@@ -34,17 +38,13 @@
 				"     inferDriftedColumnTypes: true,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> srcReadEmp",
-				"source(output(",
-				"          deptid as integer,",
-				"          deptname as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
+				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table',",
-				"     store: 'sqlserver',",
-				"     schemaName: 'dbo',",
-				"     tableName: 'Department',",
-				"     isolationLevel: 'READ_UNCOMMITTED') ~> srcReadDept"
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> srcReadDept",
+				"srcReadEmp, srcReadDept exists(srcReadEmp@deptid == srcReadDept@deptid,",
+				"     negate:true,",
+				"     broadcast: 'auto')~> existTransform"
 			]
 		}
 	}
