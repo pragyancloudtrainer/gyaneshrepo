@@ -23,6 +23,9 @@
 			"transformations": [
 				{
 					"name": "InnerJoin"
+				},
+				{
+					"name": "selectingLimitedData"
 				}
 			],
 			"scriptLines": [
@@ -53,7 +56,16 @@
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> InnerJoin"
+				"     broadcast: 'auto')~> InnerJoin",
+				"InnerJoin select(mapColumn(",
+				"          eid,",
+				"          ename,",
+				"          deptid = srcReadDept@deptid,",
+				"          deptname,",
+				"          esalary",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectingLimitedData"
 			]
 		}
 	}
