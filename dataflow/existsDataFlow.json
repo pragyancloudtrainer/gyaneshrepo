@@ -38,12 +38,17 @@
 				"     inferDriftedColumnTypes: true,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> srcReadEmp",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          deptid as integer,",
+				"          deptname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> srcReadDept",
 				"srcReadEmp, srcReadDept exists(srcReadEmp@deptid == srcReadDept@deptid,",
-				"     negate:true,",
+				"     negate:false,",
 				"     broadcast: 'auto')~> existTransform"
 			]
 		}
