@@ -1,5 +1,5 @@
 {
-	"name": "select_and_sort_pipeline",
+	"name": "using_exists_in_dataflow",
 	"properties": {
 		"activities": [
 			{
