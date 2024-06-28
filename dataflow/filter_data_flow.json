@@ -1,0 +1,64 @@
+{
+	"name": "filter_data_flow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "srcEmpTbl",
+						"type": "DatasetReference"
+					},
+					"name": "srcReadEmp"
+				},
+				{
+					"dataset": {
+						"referenceName": "srcDept",
+						"type": "DatasetReference"
+					},
+					"name": "srcReadDept"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "existTransform"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "myFilter"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          eid as integer,",
+				"          deptid as integer,",
+				"          ename as string,",
+				"          eage as integer,",
+				"          esalary as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> srcReadEmp",
+				"source(output(",
+				"          deptid as integer,",
+				"          deptname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> srcReadDept",
+				"srcReadEmp, srcReadDept exists(srcReadEmp@deptid == srcReadDept@deptid,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> existTransform",
+				"existTransform derive(IncrementedSalary = esalary + 12000) ~> derivedColumn1",
+				"derivedColumn1 filter(esalary>58000) ~> myFilter"
+			]
+		}
+	}
+}
