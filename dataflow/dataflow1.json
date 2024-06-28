@@ -26,6 +26,9 @@
 				},
 				{
 					"name": "selectingLimitedData"
+				},
+				{
+					"name": "sortSalary"
 				}
 			],
 			"scriptLines": [
@@ -65,7 +68,8 @@
 				"          esalary",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> selectingLimitedData"
+				"     skipDuplicateMapOutputs: true) ~> selectingLimitedData",
+				"selectingLimitedData sort(desc(esalary, true)) ~> sortSalary"
 			]
 		}
 	}
