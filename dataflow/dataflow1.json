@@ -20,7 +20,17 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "innerjoin"
+				},
+				{
+					"name": "selectValue"
+				},
+				{
+					"name": "sortInfo"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          eid as integer,",
@@ -42,7 +52,23 @@
 				"     validateSchema: false,",
 				"     inferDriftedColumnTypes: true,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> srcDept"
+				"     format: 'table') ~> srcDept",
+				"srcEmp, srcDept join(srcEmp@deptid == srcDept@deptid,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> innerjoin",
+				"innerjoin select(mapColumn(",
+				"          eid,",
+				"          ename,",
+				"          deptid = srcDept@deptid,",
+				"          deptname,",
+				"          esalary",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectValue",
+				"selectValue sort(desc(esalary, true),",
+				"     caseInsensitive: true) ~> sortInfo"
 			]
 		}
 	}
