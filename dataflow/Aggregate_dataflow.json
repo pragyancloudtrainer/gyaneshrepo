@@ -1,0 +1,66 @@
+{
+	"name": "Aggregate_dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "srcEmpTbl",
+						"type": "DatasetReference"
+					},
+					"name": "srcReadEmp"
+				},
+				{
+					"linkedService": {
+						"referenceName": "lsSQLDB",
+						"type": "LinkedServiceReference"
+					},
+					"name": "srcReadDept"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "InnerJoin"
+				},
+				{
+					"name": "aggFunction"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          eid as integer,",
+				"          deptid as integer,",
+				"          ename as string,",
+				"          eage as integer,",
+				"          esalary as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> srcReadEmp",
+				"source(output(",
+				"          deptid as integer,",
+				"          deptname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'Department',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> srcReadDept",
+				"srcReadEmp, srcReadDept join(srcReadEmp@deptid == srcReadDept@deptid,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> InnerJoin",
+				"InnerJoin aggregate(groupBy(deptname),",
+				"     Max_Salary = max(esalary),",
+				"          Sum_Salary = sum(esalary)) ~> aggFunction"
+			]
+		}
+	}
+}
