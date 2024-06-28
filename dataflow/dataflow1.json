@@ -19,15 +19,7 @@
 					"name": "srcReadDept"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "srcDestTable",
-						"type": "DatasetReference"
-					},
-					"name": "finaldest"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "InnerJoin"
@@ -61,24 +53,7 @@
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> InnerJoin",
-				"InnerJoin sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          eid,",
-				"          deptid = srcReadEmp@deptid,",
-				"          ename,",
-				"          deptname,",
-				"          esalary",
-				"     )) ~> finaldest"
+				"     broadcast: 'auto')~> InnerJoin"
 			]
 		}
 	}
