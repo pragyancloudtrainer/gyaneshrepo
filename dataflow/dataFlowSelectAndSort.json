@@ -1,5 +1,5 @@
 {
-	"name": "dataflowJoin",
+	"name": "dataFlowSelectAndSort",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
