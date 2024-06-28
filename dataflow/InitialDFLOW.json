@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "InitialDFLOW",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -28,7 +28,7 @@
 					"name": "selectValue"
 				},
 				{
-					"name": "sortInfo"
+					"name": "sortBySal"
 				}
 			],
 			"scriptLines": [
@@ -67,8 +67,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectValue",
-				"selectValue sort(desc(esalary, true),",
-				"     caseInsensitive: true) ~> sortInfo"
+				"selectValue sort(asc(esalary, true)) ~> sortBySal"
 			]
 		}
 	}
