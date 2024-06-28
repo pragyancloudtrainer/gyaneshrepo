@@ -1,0 +1,16 @@
+{
+	"name": "salgt55k",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "newSQLDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "salarygt55k"
+		}
+	}
+}

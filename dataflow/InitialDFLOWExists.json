@@ -20,7 +20,17 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "existActivity"
+				},
+				{
+					"name": "deriveInfo"
+				},
+				{
+					"name": "gettingInfo"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          eid as integer,",
@@ -42,7 +52,12 @@
 				"     validateSchema: false,",
 				"     inferDriftedColumnTypes: true,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> srcDept"
+				"     format: 'table') ~> srcDept",
+				"srcEmp, srcDept exists(srcEmp@deptid == srcDept@deptid,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> existActivity",
+				"existActivity derive(IncrmentedSalary = esalary + 15000) ~> deriveInfo",
+				"deriveInfo filter(esalary > 55000) ~> gettingInfo"
 			]
 		}
 	}

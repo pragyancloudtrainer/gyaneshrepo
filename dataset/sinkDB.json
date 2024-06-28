@@ -1,0 +1,12 @@
+{
+	"name": "sinkDB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "newSQLDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}

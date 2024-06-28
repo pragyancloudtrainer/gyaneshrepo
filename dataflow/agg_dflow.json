@@ -1,5 +1,5 @@
 {
-	"name": "InitialDFLOW",
+	"name": "agg_dflow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -19,30 +19,13 @@
 					"name": "srcDept"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "salgt55k",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "innerjoin"
 				},
 				{
-					"name": "selectValue"
-				},
-				{
-					"name": "sortBySal"
-				},
-				{
-					"name": "derivedColumn1"
-				},
-				{
-					"name": "salarysplit"
+					"name": "aggDFLOW"
 				}
 			],
 			"scriptLines": [
@@ -72,31 +55,9 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> innerjoin",
-				"derivedColumn1 select(mapColumn(",
-				"          eid,",
-				"          ename,",
-				"          deptid = srcDept@deptid,",
-				"          deptname,",
-				"          esalary,",
-				"          incremented_salary",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> selectValue",
-				"selectValue sort(desc(esalary, true)) ~> sortBySal",
-				"innerjoin derive(incremented_salary = esalary + 15000) ~> derivedColumn1",
-				"sortBySal split(esalary > 55000,",
-				"     esalary <= 55000,",
-				"     disjoint: true) ~> salarysplit@(salarygt55k, salarylt55k)",
-				"salarysplit@salarygt55k sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"innerjoin aggregate(groupBy(deptname),",
+				"     Total_Salary = sum(esalary),",
+				"          Max_Salary = max(esalary)) ~> aggDFLOW"
 			]
 		}
 	}
