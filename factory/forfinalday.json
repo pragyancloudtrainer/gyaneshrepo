@@ -1,0 +1,9 @@
+{
+	"name": "forfinalday",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "8bc02aad-1dad-4b81-87a7-a7c3c5a4eea5",
+		"tenantId": "f090bfe9-f899-4224-836d-d7362a2353a7"
+	}
+}
